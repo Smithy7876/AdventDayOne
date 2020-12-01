@@ -1,39 +1,169 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 
 namespace AdventCode
 {
     class Program
     {
+
         static void Main()
+        {
+            //int[] data = Data();
+
+            var random = new Random();
+            var data = new int[100000];
+            for (int i = 0; i < 100000; i++)
+            {
+                data[i] = random.Next(10000);
+            }
+
+            TwoNumbersLoop(data);
+            TwoNumbersHash(data);
+            ThreeNumbersLoop(data);
+            ThreeNumbersHash(data);
+        }
+
+        static void TwoNumbersLoop(int[] data)
+        {
+            int number1 = 0;
+            int number2 = 0;
+            int counter = 0;
+            bool numberFound = false;
+
+            for (int i = 0; i < data.Length && !numberFound; i++)
+            {
+                for (int j = 0; j < data.Length && !numberFound; j++)
+                {
+                    if (data[i] + data[j] == 2020)
+                    {
+                        number1 = data[i];
+                        number2 = data[j];
+                        numberFound = true;
+                    }
+
+                    counter++;
+                }
+            }
+
+            Console.WriteLine("Two Numbers Nested Loop");
+            Console.WriteLine("First Number: " + number1);
+            Console.WriteLine("Second Number: " + number2);
+            Console.WriteLine("Sum: " + (number1 + number2));
+            Console.WriteLine("Product: " + (number1 * number2));
+            Console.WriteLine("Iterations: " + counter);
+            Console.WriteLine("");
+        }
+
+        static void TwoNumbersHash(int[] data)
+        {
+            int number1 = 0;
+            int number2 = 0;
+            int counter = 0;
+            
+            var hash = data.ToHashSet();
+
+            foreach (var number in hash)
+            {
+                var target = 2020 - number;
+                if (hash.Contains(target))
+                {
+                    number1 = number;
+                    number2 = target;
+                    break;
+                }
+
+                counter++;
+            }
+
+            Console.WriteLine("Two Numbers Hash");
+            Console.WriteLine("First Number: " + number1);
+            Console.WriteLine("Second Number: " + number2);
+            Console.WriteLine("Sum: " + (number1 + number2));
+            Console.WriteLine("Product: " + (number1 * number2));
+            Console.WriteLine("Iterations: " + counter);
+            Console.WriteLine("");
+        }
+
+        static void ThreeNumbersLoop(int[] data)
         {
             int number1 = 0;
             int number2 = 0;
             int number3 = 0;
-            var data = Data();
+            bool numberFound = false;
+            int counter = 0;
             
-            foreach (var number in data)
+            for (int i = 0; i < data.Length && !numberFound; i++)
             {
-                for (int i = 0; i < data.Length; i++)
+                for (int j = 0; j < data.Length && !numberFound; j++)
                 {
-                    for (int j = 0; j < data.Length; j++)
+                    for (int k = 0; k < data.Length && !numberFound; k++)
                     {
-                        if (data[i] + data[j] + number == 2020)
+                        if (data[i] + data[j] + data[k] == 2020)
                         {
                             number1 = data[i];
-                            number2 = number;
-                            number3 = data[j];
-                            break;
+                            number2 = data[j];
+                            number3 = data[k];
+                            numberFound = true;
                         }
+
+                        counter++;
                     }
                 }
-                
             }
 
-            Console.WriteLine(number1);
-            Console.WriteLine(number2);
-            Console.WriteLine(number3);
-            Console.WriteLine(number1 + number2 + number3);
-            Console.WriteLine(number1 * number2 * number3);
+            Console.WriteLine("Three Numbers Nested Loop");
+            Console.WriteLine("First Number: " + number1);
+            Console.WriteLine("Second Number: " + number2);
+            Console.WriteLine("Third Number: " + number3);
+            Console.WriteLine("Sum: " + (number1 + number2 + number3));
+            Console.WriteLine("Product: " + (number1 * number2 * number3));
+            Console.WriteLine("Iterations: " + counter);
+            Console.WriteLine("");
+        }
+
+        static void ThreeNumbersHash(int[] data)
+        {
+            int number1 = 0;
+            int number2 = 0;
+            int number3 = 0;
+            bool numberFound = false;
+            int counter = 0; 
+            var hash = data.ToHashSet();
+
+            foreach (var number in hash)
+            {
+                var target = 2020 - number;
+                foreach (var item in hash)
+                {
+                    var secondTarget = target - item;
+
+                    if (hash.Contains(secondTarget))
+                    {
+                        number1 = number;
+                        number2 = item;
+                        number3 = secondTarget;
+                        numberFound = true;
+                        break;
+                    }
+
+                    counter++;
+                }
+
+                if (numberFound)
+                {
+                    break;
+                }
+            }
+
+            Console.WriteLine("Three Numbers Hash");
+            Console.WriteLine("First Number: " + number1);
+            Console.WriteLine("Second Number: " + number2);
+            Console.WriteLine("Third Number: " + number3);
+            Console.WriteLine("Sum: " + (number1 + number2 + number3));
+            Console.WriteLine("Product: " + (number1 * number2 * number3));
+            Console.WriteLine("Iterations: " + counter);
+            Console.WriteLine("");
         }
 
         static int[] Data()
