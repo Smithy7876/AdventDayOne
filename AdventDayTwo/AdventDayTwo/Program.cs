@@ -8,6 +8,17 @@ namespace AdventDayTwo
         static void Main()
         {
             var data = Data();
+
+            var occurrences = CountOccurences(data);
+            var position = CorrectPosition(data);
+
+
+            Console.WriteLine("Number of Valid passwords (based on occurrences  of letter): " + occurrences);
+            Console.WriteLine("Number of Valid passwords (based on position of letter): " + position);
+        }
+
+        static int CountOccurences(string[] data)
+        {
             var validCount = 0;
 
             foreach (var item in data)
@@ -30,7 +41,55 @@ namespace AdventDayTwo
 
             }
 
-            Console.WriteLine("Number of Valid passwords: " + validCount);
+            return validCount;
+        }
+
+        static int CorrectPosition(string[] data)
+        {
+            var validCount = 0;
+
+            foreach (var item in data)
+            {
+                string[] splitItems = item.Split(":");
+                string[] splitRules = splitItems[0].Split(" ");
+                string[] bounds = splitRules[0].Split("-");
+
+                string password = splitItems[1].Trim();
+                char letter = char.Parse(splitRules[1]);
+                int firstPosition = int.Parse(bounds[0]);
+                int secondPosition = int.Parse(bounds[1]);
+
+
+                char[] characters = password.ToCharArray();
+                bool positionOne = false;
+                bool positionTwo = false;
+                for (var i = 0; i < secondPosition; i++) // No need to check past second potential position
+                {
+                    if (i == firstPosition - 1)
+                    {
+                        if (characters[i] == letter)
+                        {
+                            positionOne = true;
+                        }
+                    }
+
+                    if (i == secondPosition - 1)
+                    {
+                        if (characters[i] == letter)
+                        {
+                            positionTwo = true;
+                        }
+                    }
+                }
+
+                if (positionOne && !positionTwo || !positionOne && positionTwo) //Only one position can be true
+                {
+                    validCount++;
+                }
+
+            }
+
+            return validCount;
         }
 
         static string[] Data()
