@@ -63,24 +63,18 @@ namespace AdventDayTwo
                 char[] characters = password.ToCharArray();
                 bool positionOne = false;
                 bool positionTwo = false;
-                for (var i = 0; i < secondPosition; i++) // No need to check past second potential position
-                {
-                    if (i == firstPosition - 1)
-                    {
-                        if (characters[i] == letter)
-                        {
-                            positionOne = true;
-                        }
-                    }
 
-                    if (i == secondPosition - 1)
-                    {
-                        if (characters[i] == letter)
-                        {
-                            positionTwo = true;
-                        }
-                    }
+                if (characters[firstPosition -1] == letter)
+                {
+                    positionOne = true;
                 }
+
+                if (characters[secondPosition -1] == letter)
+                {
+                    positionTwo = true;
+                }
+
+
 
                 if (positionOne && !positionTwo || !positionOne && positionTwo) //Only one position can be true
                 {
