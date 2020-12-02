@@ -76,7 +76,7 @@ namespace AdventDayTwo
 
 
 
-                if (positionOne && !positionTwo || !positionOne && positionTwo) //Only one position can be true
+                if (positionOne ^ positionTwo) //Only one position can be true
                 {
                     validCount++;
                 }
